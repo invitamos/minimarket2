@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light">
+<title>Panel de administración</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v={V}">
+<link rel="icon" type="image/svg+xml" href="assets/icono.svg">
+</head>
+<body class="admin">
+
+<!-- ================= Ingreso ================= -->
+<div id="gate" class="login-page">
+  <main class="login-card">
+    <div class="login-brand">
+      <span id="gateLogo" class="logo logo-ph login-ico" aria-hidden="true"></span>
+      <span class="login-name" id="gateName">Mi <span class="name-2">Minimarket</span></span>
+    </div>
+    <p class="login-sub" id="gateSub">Panel de administración</p>
+    <div id="gateMsgs"></div>
+
+    <form id="loginForm" class="stack login-form">
+      <label class="fld"><span>Usuario</span><input id="lUser" autocomplete="username" required></label>
+      <label class="fld"><span>Contraseña</span><input id="lPass" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
+      <p class="login-status" id="loginStatus" aria-live="polite"></p>
+    </form>
+
+
+    <a class="login-back" href="./">← Volver al catálogo</a>
+  </main>
+</div>
+
+<!-- ================= Panel ================= -->
+<div id="panel" hidden>
+  <header class="adm-head">
+    <div class="adm-head-in">
+      <a class="adm-brand" href="admin.html">
+        <span id="admLogo" class="logo logo-ph" aria-hidden="true"></span>
+        <span class="adm-brand-txt"><span class="adm-name" id="admName"></span><span class="adm-sign">Spycomers</span></span>
+        <small>/ admin</small>
+      </a>
+      <nav class="adm-nav">
+        <a href="./" target="_blank" rel="noopener">Ver catálogo</a>
+        <span class="whoami" id="whoami"></span>
+        <button class="btn btn-ghost" type="button" id="logoutBtn">Cerrar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap adm-main">
+    <div id="banners"></div>
+    <div id="msgs" aria-live="polite"></div>
+    <nav class="tabs" role="tablist">
+      <a href="#caja" data-tab="caja">Caja</a>
+      <a href="#vender" data-tab="vender">Vender</a>
+      <a href="#productos" data-tab="productos">Productos</a>
+      <a href="#ventas" data-tab="ventas">Ventas</a>
+      <a href="#clientes" data-tab="clientes">Clientes</a>
+      <a href="#compras" data-tab="compras">Compras</a>
+      <a href="#proveedores" data-tab="proveedores">Proveedores</a>
+      <a href="#reportes" data-tab="reportes">Reportes</a>
+      <a href="#marcas" data-tab="marcas">Marcas</a>
+      <a href="#config" data-tab="config">Configuración</a>
+    </nav>
+
+    <!-- Productos -->
+    <section data-pane="productos">
+      <div class="toolbar">
+        <label class="search search-sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="tableSearch" placeholder="Buscar en mis productos" aria-label="Buscar en mis productos">
+        </label>
+        <button class="btn btn-accent" type="button" id="btnNew">+ Nuevo producto</button>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Foto</th><th>Nombre</th><th>SKU</th><th>Código</th><th>Precio</th><th>Present.</th><th>Stock</th><th>Estado</th><th class="ta-r">Acciones</th></tr></thead>
+          <tbody id="prodRows"></tbody>
+        </table>
+      </div>
+      <div class="list-foot">
+        <label class="per-page">Mostrar
+          <select id="prodPer"><option value="10">10</option><option value="20" selected>20</option><option value="50">50</option><option value="100">100</option></select>
+          por página</label>
+        <div class="pager" id="prodPager"></div>
+      </div>
+    </section>
+
+
+    <!-- Vender -->
+    <!-- Caja y Reportes: el contenido está en caja.html (lo carga assets/caja.js) -->
+    <div id="cajaMount"></div>
+
+    <section data-pane="vender" hidden>
+      <div id="cajaWarn"></div>
+      <div class="pos">
+        <div class="pos-main">
+          <div class="pos-search">
+            <label class="scan">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 8v8M10 8v8M13 8v8M17 8v8"/></svg>
+              <input id="posQ" placeholder="Escaneá el código de barras o escribí el nombre" autocomplete="off" aria-label="Código de barras o nombre del producto">
+            </label>
+            <button type="button" class="btn btn-secondary btn-cam" id="posCam" title="Escanear con la cámara"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Cámara</span></button>
+            <div class="pick-list" id="posResults" hidden></div>
+          </div>
+          <div class="pos-flash" id="posFlash" role="status" aria-live="polite"></div>
+          <div class="cart">
+            <div class="cart-head"><span>Producto</span><span>Cant.</span><span class="ta-r">Subtotal</span></div>
+            <div id="cartRows"></div>
+            <div class="cart-empty" id="cartEmpty">Escaneá o buscá un producto para empezar la venta.</div>
+          </div>
+          <p class="pos-keys"><kbd>F2</kbd> cobrar · <kbd>F4</kbd> monto recibido · <kbd>F8</kbd> vaciar · <kbd>Esc</kbd> limpiar búsqueda</p>
+        </div>
+
+        <aside class="pos-side">
+          <div class="pos-doc">
+            <span class="pos-label">Comprobante</span>
+            <div class="seg seg-2" role="radiogroup" aria-label="Tipo de comprobante">
+              <button type="button" data-doc="ticket" class="on">Ticket</button>
+              <button type="button" data-doc="factura">Factura electrónica</button>
+            </div>
+          </div>
+          <div class="pos-client">
+            <span class="pos-label">Cliente</span>
+            <button type="button" class="client-btn" id="clientBtn">Consumidor final</button>
+            <div class="client-form" id="clientForm" hidden>
+              <div class="pos-search client-find">
+                <input id="cFind" placeholder="Buscar cliente guardado (nombre, RUC o CI)" autocomplete="off" aria-label="Buscar cliente guardado">
+                <div class="pick-list" id="cFindList" hidden></div>
+              </div>
+              <div class="seg" role="radiogroup" aria-label="Tipo de cliente">
+                <button type="button" data-ctype="innominado" class="on">Sin nombre</button>
+                <button type="button" data-ctype="ruc">RUC</button>
+                <button type="button" data-ctype="ci">Cédula</button>
+              </div>
+              <div class="client-fields" id="clientFields" hidden>
+                <input id="cDoc" placeholder="RUC con DV (80012345-6)" autocomplete="off">
+                <input id="cName" placeholder="Nombre o razón social" autocomplete="off">
+                <input id="cMail" type="email" placeholder="Correo (opcional, para la factura)" autocomplete="off">
+                <input id="cTel" inputmode="tel" placeholder="Celular para WhatsApp (opcional)" autocomplete="off">
+                <label class="check check-sm"><input type="checkbox" id="cSave" checked> Guardar en Clientes</label>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" id="clientOk">Listo</button>
+            </div>
+          </div>
+
+          <div class="pos-disc" id="posDiscBox">
+            <span class="pos-label">Descuento</span>
+            <div class="disc-row">
+              <input id="posDesc" class="js-num" inputmode="numeric" placeholder="0" autocomplete="off" aria-label="Descuento">
+              <div class="seg seg-2 disc-mode" role="radiogroup" aria-label="Tipo de descuento">
+                <button type="button" data-dmode="gs" class="on">Gs.</button>
+                <button type="button" data-dmode="pct">%</button>
+              </div>
+            </div>
+          </div>
+          <div class="pos-credit">
+            <button type="button" class="link-btn" id="crToggle">Usar vale de devolución</button>
+            <div class="cr-row" id="crBox" hidden>
+              <input id="crCode" placeholder="Código, ej: ND-000001" autocomplete="off" aria-label="Código del vale de devolución">
+              <button type="button" class="btn btn-secondary btn-sm" id="crApply">Aplicar</button>
+            </div>
+          </div>
+          <div class="pos-break" id="posBreak"></div>
+          <div class="pos-total"><span id="posTotalLbl">Total</span><strong id="posTotal">Gs. 0</strong></div>
+
+          <div class="pay-methods" role="radiogroup" aria-label="Forma de pago">
+            <button type="button" data-pay="efectivo" class="on">Efectivo</button>
+            <button type="button" data-pay="transferencia">Transferencia</button>
+          </div>
+
+          <div id="transferBox" class="stack transfer-box" hidden>
+            <label class="fld"><span>Banco *</span><input id="tBank" list="bankList" maxlength="60" autocomplete="off" placeholder="Ej: Banco Itaú"></label>
+            <label class="fld"><span>N° de comprobante *</span><input id="tRef" maxlength="40" autocomplete="off" inputmode="numeric"></label>
+            <label class="fld"><span>Nombre de quien envió *</span><input id="tFrom" maxlength="80" autocomplete="off"></label>
+            <datalist id="bankList">
+              <option value="Banco Itaú"><option value="Banco Continental"><option value="ueno bank"><option value="Banco Basa">
+              <option value="Banco GNB"><option value="Banco Familiar"><option value="Visión Banco"><option value="Sudameris Bank">
+              <option value="Banco Atlas"><option value="Banco Nacional de Fomento"><option value="Interfisa Banco"><option value="Banco Río">
+              <option value="Zeta Banco"><option value="Financiera FIC"><option value="Tigo Money"><option value="Personal Billetera">
+            </datalist>
+          </div>
+
+          <div id="cashBox">
+            <label class="fld"><span>Recibido</span><input id="posPaid" class="js-num paid-input" inputmode="numeric" placeholder="Monto exacto" autocomplete="off"></label>
+            <div class="quick-cash" id="quickCash"></div>
+            <div class="pos-change"><span>Vuelto</span><strong id="posChange">Gs. 0</strong></div>
+          </div>
+
+          <button type="button" class="btn btn-accent btn-block btn-xl" id="posCharge">Cobrar <kbd>F2</kbd></button>
+          <div class="save-state" id="saveState"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Historial de ventas -->
+    <section data-pane="ventas" hidden>
+      <div class="hist-head">
+        <label class="fld fld-inline"><span>Mes</span><input type="month" id="saleMonth"></label>
+        <div class="hist-actions">
+          <button type="button" class="btn btn-pdf" id="expCsv">Descargar PDF</button>
+          <button type="button" class="btn btn-secondary" id="expSifen">Exportar para factura electrónica</button>
+        </div>
+      </div>
+      <div class="kpis" id="saleKpis"></div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>N°</th><th>Fecha</th><th>Cliente</th><th>Pago</th><th class="ta-r">Total</th><th>Estado</th><th class="ta-r">Acciones</th></tr></thead>
+          <tbody id="saleRows"></tbody>
+        </table>
+      </div>
+      <div class="list-foot">
+        <label class="check check-sm"><input type="checkbox" id="saleShowVoid"> Mostrar anuladas</label>
+        <div class="pager" id="salePager"></div>
+      </div>
+    </section>
+
+    <!-- Compras -->
+    <section data-pane="compras" hidden>
+      <section class="panel">
+        <h2>Nueva compra</h2>
+        <p class="hint">Al registrar la compra se suma el stock de cada producto y presentación.</p>
+        <div class="grid-form grid-buy">
+          <div class="fld prov-find"><span>Proveedor *</span>
+            <div class="pos-search"><input id="bProv" maxlength="80" autocomplete="off" placeholder="Escribí el nombre o RUC"><div class="pick-list" id="bProvList" hidden></div></div>
+            <label class="check check-sm"><input type="checkbox" id="bProvSave" checked> Guardar en Proveedores</label>
+          </div>
+          <label class="fld"><span>RUC del proveedor</span><input id="bRuc" maxlength="20" autocomplete="off"></label>
+          <label class="fld"><span>N° de factura</span><input id="bFac" maxlength="20" placeholder="001-001-0000123" autocomplete="off"><small class="hint" id="bFacHint"></small></label>
+          <label class="fld"><span>Fecha</span><input id="bDate" type="date"></label>
+          <label class="fld"><span>Condición</span><select id="bCond"><option value="contado">Contado</option><option value="credito">Crédito</option></select></label>
+          <label class="fld" id="bPagoW"><span>Pagado con</span><select id="bPago"><option value="efectivo">Efectivo (sale de la caja)</option><option value="transferencia">Transferencia</option></select></label>
+        </div>
+        <div class="pos-search buy-search">
+          <label class="scan">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 8v8M10 8v8M13 8v8M17 8v8"/></svg>
+            <input id="buyQ" placeholder="Escaneá o buscá el producto comprado" autocomplete="off" aria-label="Producto comprado">
+          </label>
+          <div class="pick-list" id="buyResults" hidden></div>
+        </div>
+        <div class="table-wrap">
+          <table class="tbl tbl-buy">
+            <thead><tr><th>Producto</th><th>Present.</th><th>Cantidad</th><th>Costo unitario</th><th class="ta-r">Subtotal</th><th></th></tr></thead>
+            <tbody id="buyRows"><tr><td colspan="6" class="tbl-empty">Agregá los productos que llegaron.</td></tr></tbody>
+          </table>
+        </div>
+        <div class="buy-foot">
+          <span>Total de la compra <strong id="buyTotal">Gs. 0</strong></span>
+          <button type="button" class="btn btn-accent" id="buySave">Registrar compra</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="hist-head">
+          <h2>Compras registradas</h2>
+          <label class="fld fld-inline"><span>Mes</span><input type="month" id="buyMonth"></label>
+        </div>
+        <div class="table-wrap">
+          <table class="tbl">
+            <thead><tr><th>Fecha</th><th>Proveedor</th><th>Factura</th><th>Productos</th><th class="ta-r">Total</th><th>Estado</th><th class="ta-r">Acciones</th></tr></thead>
+            <tbody id="buyHist"></tbody>
+          </table>
+        </div>
+        <div class="list-foot">
+          <label class="check check-sm"><input type="checkbox" id="buyShowVoid"> Mostrar anuladas</label>
+          <div class="pager" id="buyPager"></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Clientes -->
+    <section data-pane="clientes" hidden>
+      <div class="cfg-grid ct-grid">
+        <section class="panel ct-form-box">
+          <h2 id="clFormTitle">Nuevo cliente</h2>
+          <form id="clForm" class="stack" autocomplete="off">
+            <input type="hidden" id="clId">
+            <div class="seg seg-2" role="radiogroup" aria-label="Tipo de documento">
+              <button type="button" data-cltipo="ruc" class="on">RUC</button>
+              <button type="button" data-cltipo="ci">Cédula</button>
+            </div>
+            <label class="fld"><span id="clDocLbl">RUC con DV *</span><input id="clDoc" maxlength="20" placeholder="80012345-6"></label>
+            <label class="fld"><span>Nombre o razón social *</span><input id="clName" maxlength="120"></label>
+            <div class="grid-form">
+              <label class="fld"><span>Celular</span><input id="clTel" inputmode="tel" maxlength="30"></label>
+              <label class="fld"><span>Correo</span><input id="clMail" type="email" maxlength="120"></label>
+            </div>
+            <label class="fld"><span>Dirección</span><input id="clDir" maxlength="160"></label>
+            <div class="btn-row"><button class="btn btn-accent" type="submit" id="clSaveBtn">Guardar cliente</button><button class="btn btn-secondary" type="button" id="clCancel" hidden>Cancelar</button></div>
+          </form>
+        </section>
+        <section class="panel ct-list-box">
+          <div class="toolbar">
+            <label class="search search-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input type="search" id="clSearch" placeholder="Buscar por nombre, RUC o cédula" aria-label="Buscar cliente"></label>
+            <span class="hint" id="clCount"></span>
+          </div>
+          <div class="table-wrap"><table class="tbl tbl-ct"><thead><tr><th>Nombre</th><th>Documento</th><th>Celular</th><th>Correo</th><th class="ta-r">Acciones</th></tr></thead><tbody id="clRows"></tbody></table></div>
+          <div class="list-foot"><span></span><div class="pager" id="clPager"></div></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Proveedores -->
+    <section data-pane="proveedores" hidden>
+      <div class="cfg-grid ct-grid">
+        <section class="panel ct-form-box">
+          <h2 id="pvFormTitle">Nuevo proveedor</h2>
+          <form id="pvForm" class="stack" autocomplete="off">
+            <input type="hidden" id="pvId">
+            <label class="fld"><span>Nombre o razón social *</span><input id="pvName" maxlength="120"></label>
+            <label class="fld"><span>RUC con DV</span><input id="pvRuc" maxlength="20" placeholder="80012345-6"></label>
+            <div class="grid-form">
+              <label class="fld"><span>Teléfono</span><input id="pvTel" inputmode="tel" maxlength="30"></label>
+              <label class="fld"><span>Correo</span><input id="pvMail" type="email" maxlength="120"></label>
+            </div>
+            <label class="fld"><span>Persona de contacto</span><input id="pvContacto" maxlength="80"></label>
+            <label class="fld"><span>Dirección</span><input id="pvDir" maxlength="160"></label>
+            <div class="btn-row"><button class="btn btn-accent" type="submit" id="pvSaveBtn">Guardar proveedor</button><button class="btn btn-secondary" type="button" id="pvCancel" hidden>Cancelar</button></div>
+          </form>
+        </section>
+        <section class="panel ct-list-box">
+          <div class="toolbar">
+            <label class="search search-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input type="search" id="pvSearch" placeholder="Buscar por nombre o RUC" aria-label="Buscar proveedor"></label>
+            <span class="hint" id="pvCount"></span>
+          </div>
+          <div class="table-wrap"><table class="tbl tbl-ct"><thead><tr><th>Nombre</th><th>RUC</th><th>Teléfono</th><th>Contacto</th><th class="ta-r">Acciones</th></tr></thead><tbody id="pvRows"></tbody></table></div>
+          <div class="list-foot"><span></span><div class="pager" id="pvPager"></div></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Marcas -->
+    <section data-pane="marcas" hidden>
+      <p class="hint tab-intro">Las marcas aparecen arriba del catálogo y sirven de filtro. Al cargar un producto elegís su marca de la lista.</p>
+      <div class="brand-admin" id="brandAdmin"></div>
+    </section>
+
+    <!-- Configuración -->
+    <section data-pane="config" hidden>
+      <div class="cfg-grid">
+        <section class="panel">
+          <h2>Datos de la tienda</h2>
+          <form id="storeForm" class="stack">
+            <div class="fld">
+              <span>Logo de la tienda</span>
+              <div class="photo">
+                <img id="logoPreview" alt="" hidden>
+                <input type="file" id="logoInput" accept="image/jpeg,image/png,image/webp,image/gif">
+              </div>
+              <label class="check" id="logoRemoveWrap" hidden><input type="checkbox" id="logoRemove"> Quitar el logo</label>
+            </div>
+            <label class="fld"><span>Nombre de la tienda</span><input id="sName" required maxlength="80" autocomplete="off"></label>
+            <label class="fld"><span>Bajada / descripción corta</span><input id="cTag" maxlength="140"></label>
+            <label class="fld"><span>Dirección u horario (aparece al pie del catálogo)</span><input id="cAddr" maxlength="160" placeholder="Ej: Av. Principal 123 · Lun a Sáb 8 a 18 h"></label>
+            <label class="fld"><span>Número de WhatsApp (con código de país, sin +, ej: 595981234567)</span><input id="cWa" inputmode="numeric" maxlength="20"></label>
+            <div><button class="btn btn-accent" type="submit">Guardar cambios</button></div>
+          </form>
+        </section>
+
+        <section class="panel" id="facturacion">
+          <h2>Datos para facturación</h2>
+          <p class="hint">Se usan en el ticket y en el archivo para factura electrónica (SIFEN). Se guardan cifrados.</p>
+          <form id="fiscalForm" class="stack">
+            <div class="grid-form">
+              <label class="fld"><span>RUC con DV</span><input id="fRuc" placeholder="80012345-6" maxlength="15"></label>
+              <label class="fld"><span>Teléfono / celular</span><input id="fTel" maxlength="30" placeholder="(0972) 707 346"></label>
+            </div>
+            <label class="fld"><span>Razón social (va debajo del RUC)</span><input id="fRazon" maxlength="120" placeholder="Ej: MI MINIMARKET S.R.L."></label>
+            <label class="fld"><span>Nombre de la tienda en el ticket (va primero, grande)</span><input id="fFant" maxlength="120" placeholder="Ej: Mi Minimarket"></label>
+            <label class="fld"><span>Dirección</span><input id="fDir" maxlength="160" placeholder="Ej: AQUIDABAN Y GRAL. AQUINO"></label>
+            <label class="fld"><span>Ciudad</span><input id="fCiudad" maxlength="80" placeholder="Ej: Paraguarí"></label>
+            <label class="fld"><span>Actividad económica</span><input id="fAct" maxlength="160" placeholder="Comercio al por menor (minimarket / almacén)"></label>
+            <div class="grid-form">
+              <label class="fld"><span>Timbrado N°</span><input id="fTimb" inputmode="numeric" maxlength="8"></label>
+              <label class="fld"><span>Vigente desde</span><input id="fVig" type="date"></label>
+              <label class="fld"><span>Establecimiento</span><input id="fEst" inputmode="numeric" maxlength="3" placeholder="001"></label>
+              <label class="fld"><span>Punto de expedición</span><input id="fPto" inputmode="numeric" maxlength="3" placeholder="001"></label>
+              <label class="fld"><span>Próximo número</span><input id="fNext" class="js-num" inputmode="numeric"></label>
+              <label class="fld"><span>Ancho del ticket</span><select id="fAncho"><option value="80">80 mm</option><option value="58">58 mm</option></select></label>
+            </div>
+            <label class="check"><input type="checkbox" id="fAuto"> Imprimir el ticket automáticamente al cobrar</label>
+            <div><button class="btn btn-accent" type="submit">Guardar datos de facturación</button></div>
+          </form>
+        </section>
+
+        <section class="panel" id="factuflex">
+          <h2>Factura electrónica (FactuFlex)</h2>
+          <p class="hint">Con esto, cada factura se envía al SIFEN al cobrar y vuelve con su CDC. El PDF que se manda al cliente es el KuDE oficial. Estos datos se guardan cifrados.</p>
+          <form id="ffForm" class="stack" autocomplete="off">
+            <label class="fld"><span>Dirección de la API</span><input id="ffUrl" maxlength="200"></label>
+            <label class="fld"><span>Usuario de FactuFlex (correo)</span><input id="ffUser" maxlength="120" autocomplete="off"></label>
+            <label class="fld"><span>Contraseña de FactuFlex</span><input id="ffPass" type="password" maxlength="120" autocomplete="new-password"></label>
+            <label class="check"><input type="checkbox" id="ffOn"> Emitir facturas electrónicas por FactuFlex al cobrar</label>
+            <div class="btn-row">
+              <button class="btn btn-accent" type="submit">Guardar</button>
+              <button class="btn btn-secondary" type="button" id="ffTest">Probar conexión</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel" id="correoAuto">
+          <h2>Envío automático por correo</h2>
+          <p class="hint">Al cobrar, la factura se envía sola en PDF al correo del cliente. Usa el servicio EmailJS (plan gratis: 200 correos por mes). Estos datos se guardan cifrados.</p>
+          <form id="mailForm" class="stack" autocomplete="off">
+            <label class="fld"><span>Service ID</span><input id="mService" placeholder="service_xxxxxxx" maxlength="60"></label>
+            <label class="fld"><span>Template ID</span><input id="mTemplate" placeholder="template_xxxxxxx" maxlength="60"></label>
+            <label class="fld"><span>Public Key</span><input id="mKey" maxlength="80"></label>
+            <label class="check"><input type="checkbox" id="mAuto" checked> Enviar la factura automáticamente al cobrar</label>
+            <label class="check"><input type="checkbox" id="mTickets"> También enviar los tickets si el cliente dejó su correo</label>
+            <label class="fld"><span>Correo para la prueba</span><input id="mTest" type="email" placeholder="tucorreo@gmail.com"></label>
+            <div class="btn-row">
+              <button class="btn btn-accent" type="submit">Guardar</button>
+              <button class="btn btn-secondary" type="button" id="mTestBtn">Enviar correo de prueba</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel panel-danger" id="resetDatos">
+          <h2>Empezar con datos reales</h2>
+          <p class="hint">Borra las ventas, compras, aperturas y cierres de caja que hiciste de prueba, y vuelve a 1 la numeración de tickets y facturas. Los productos, precios, marcas, fotos y la configuración <strong>no se tocan</strong>.</p>
+          <div class="stack">
+            <label class="check"><input type="checkbox" id="rsStock"> Poner también en 0 el stock de todos los productos (para cargarlo de nuevo con Compras)</label>
+            <label class="fld"><span>Para confirmar, escribí BORRAR</span><input id="rsConfirm" autocomplete="off" placeholder="BORRAR"></label>
+            <div><button class="btn btn-danger" type="button" id="rsBtn">Borrar datos de prueba</button></div>
+          </div>
+        </section>
+
+        <section class="panel" id="usuarios">
+          <h2>Usuarios</h2>
+          <p class="hint"><strong>Administrador:</strong> puede todo. <strong>Cajero:</strong> usa solo lo que vos le permitas. Tocá <strong>Permisos</strong> en cada cajero para elegir qué secciones ve y si puede anular o eliminar.</p>
+          <div id="userList" class="user-list"></div>
+          <h3 class="user-new-title">Agregar usuario</h3>
+          <form id="userForm" class="stack" autocomplete="off">
+            <div class="grid-form">
+              <label class="fld"><span>Usuario</span><input id="nuUser" required pattern="[A-Za-z0-9._@\-]{3,40}" placeholder="Ej: maria" autocomplete="off"></label>
+              <label class="fld"><span>Tipo</span><select id="nuRole"><option value="cajero">Cajero</option><option value="admin">Administrador</option></select></label>
+              <label class="fld"><span>Contraseña</span><input id="nuPass" type="password" required minlength="8" placeholder="Mínimo 8 caracteres" autocomplete="new-password"></label>
+              <label class="fld"><span>Repetir contraseña</span><input id="nuPass2" type="password" required minlength="8" autocomplete="new-password"></label>
+            </div>
+            <div><button class="btn btn-accent" type="submit">Crear usuario</button></div>
+          </form>
+        </section>
+
+        <section class="panel" id="credenciales">
+          <h2>Mi usuario y contraseña</h2>
+          <p class="hint">Para confirmar cualquier cambio necesitás tu contraseña actual. Si solo querés cambiar el usuario, dejá la contraseña nueva en blanco.</p>
+          <form id="credForm" class="stack" autocomplete="off">
+            <label class="fld"><span>Usuario</span><input id="kUser" required pattern="[A-Za-z0-9._@\-]{3,40}" autocomplete="username"></label>
+            <label class="fld"><span>Nueva contraseña</span><input id="kPass" type="password" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres"></label>
+            <label class="fld"><span>Repetir nueva contraseña</span><input id="kPass2" type="password" autocomplete="new-password"></label>
+            <label class="fld"><span>Contraseña actual *</span><input id="kCur" type="password" required autocomplete="current-password"></label>
+            <div><button class="btn btn-accent" type="submit">Guardar usuario y contraseña</button></div>
+          </form>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Formulario de producto -->
+  <dialog id="productDialog" class="dlg" aria-labelledby="dlgTitle">
+    <form id="productForm" class="dlg-form">
+      <input type="hidden" id="f_id">
+      <div class="dlg-head">
+        <h2 id="dlgTitle">Nuevo producto</h2>
+        <button type="button" class="dlg-x" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="dlg-body">
+        <div class="grid-form">
+          <label class="fld span-2"><span>Nombre *</span><input id="f_name" required maxlength="120" placeholder="Ej: Zapatilla urbana Runner"></label>
+          <label class="fld"><span>Categoría *</span><input id="f_category" list="catList" required maxlength="60" placeholder="Zapatillas"></label>
+          <label class="fld"><span>Para quién</span>
+            <select id="f_gender">
+              <option value="">Sin especificar</option>
+              <option>Dama</option><option>Caballero</option><option>Unisex</option><option>Niños</option>
+            </select>
+          </label>
+          <label class="fld"><span>Marca</span>
+            <select id="f_brand"><option value="">Sin marca</option></select>
+            <small class="hint">¿Falta alguna? Agregala en la pestaña Marcas.</small>
+          </label>
+          <label class="fld"><span>Colores</span><input id="f_colors" maxlength="120" placeholder="Negro, blanco"></label>
+          <label class="fld"><span>SKU</span><input id="f_sku" maxlength="40"></label>
+          <label class="fld"><span>Código de barras</span><input id="f_code" maxlength="40" placeholder="Escaneá o escribí el código"></label>
+          <label class="fld span-2"><span>Otros códigos de barras (opcional)</span><input id="f_codes" maxlength="300" placeholder="Si el mismo producto tiene más de un código, separalos con coma">
+            <small class="hint">Al escanear en Vender un código que no existe, el sistema te deja asignarlo a un producto y lo guarda acá.</small></label>
+          <label class="fld" id="f_costW"><span>Costo (Gs.)</span><input id="f_cost" inputmode="numeric" placeholder="Lo que te cuesta a vos" autocomplete="off"><small class="hint" id="f_margin"></small></label>
+          <label class="fld"><span>Precio (Gs.) *</span><input id="f_price" inputmode="numeric" required placeholder="250000"></label>
+          <label class="fld"><span>Stock *</span><input id="f_stock" inputmode="numeric" placeholder="0"><small class="hint" id="stockHint"></small></label>
+          <label class="fld"><span>IVA</span>
+            <select id="f_iva"><option value="10">10 %</option><option value="5">5 %</option><option value="0">Exento</option></select>
+          </label>
+        </div>
+
+        <fieldset class="block">
+          <legend>Presentaciones y stock (opcional)</legend>
+          <p class="hint">Opcional. Usalo si un mismo producto se vende en varias presentaciones (por unidad, pack, caja, etc.). Si cargás presentaciones, el stock total se calcula solo. Cada presentación puede tener <strong>su propio código de barras</strong>: escaneala en el campo de código, así al vender se agrega directo con la presentación correcta.</p>
+          <div class="quick">
+            <span>Cargar rápido:</span>
+            <button type="button" class="chip-btn" data-range="18-26">Bebés 18–26</button>
+            <button type="button" class="chip-btn" data-range="27-34">Niños 27–34</button>
+            <button type="button" class="chip-btn" data-range="35-40">Dama 35–40</button>
+            <button type="button" class="chip-btn" data-range="38-44">Caballero 38–44</button>
+          </div>
+          <div id="sizeRows" class="rows rows-sizes"></div>
+          <button type="button" class="btn btn-line" id="addSize">+ Agregar presentación</button>
+        </fieldset>
+
+        <label class="fld"><span>Descripción corta</span><textarea id="f_desc" rows="2" maxlength="400" placeholder="Material, suela, uso recomendado…"></textarea></label>
+
+        <div class="fld">
+          <span>Foto del producto</span>
+          <div class="photo">
+            <img id="f_preview" alt="" hidden>
+            <input type="file" id="f_image" accept="image/jpeg,image/png,image/webp,image/gif">
+          </div>
+          <label class="check" id="removeWrap" hidden><input type="checkbox" id="f_remove"> Quitar la foto actual</label>
+        </div>
+
+        <fieldset class="block">
+          <legend>Cuotas disponibles</legend>
+          <p class="hint">Cargá la cantidad de cuotas y el monto de cada una. El interés se calcula comparando con el precio.</p>
+          <div id="instRows" class="rows"></div>
+          <button type="button" class="btn btn-line" id="addInst">+ Agregar cuota</button>
+        </fieldset>
+
+        <label class="check"><input type="checkbox" id="f_visible" checked> Producto visible en el catálogo</label>
+      </div>
+      <div class="dlg-foot">
+        <button type="button" class="btn btn-secondary" data-close>Cancelar</button>
+        <button type="submit" class="btn btn-accent" id="saveBtn">Guardar producto</button>
+      </div>
+    </form>
+  </dialog>
+  <datalist id="catList"></datalist>
+
+  <!-- Elegir talle al vender -->
+  <dialog id="sizeDlg" class="dlg dlg-sm" aria-labelledby="sizeTitle">
+    <div class="confirm-body">
+      <h2 id="sizeTitle">Elegí la presentación</h2>
+      <p id="sizeName"></p>
+      <div class="size-pick" id="sizePick"></div>
+    </div>
+    <div class="dlg-foot"><button type="button" class="btn btn-secondary" id="sizeCancel">Cancelar</button></div>
+  </dialog>
+
+  <!-- Código escaneado que no está cargado -->
+  <dialog id="codeDlg" class="dlg dlg-sm" aria-labelledby="codeTitle">
+    <div class="confirm-body code-body">
+      <h2 id="codeTitle">Código no encontrado</h2>
+      <p>El código <strong id="codeVal"></strong> no está cargado en ningún producto. Buscá a qué producto pertenece y se guarda para la próxima vez.</p>
+      <input id="codeQ" class="code-q" placeholder="Buscar producto por nombre o marca" autocomplete="off" aria-label="Buscar producto">
+      <div class="code-list" id="codeList"></div>
+    </div>
+    <div class="dlg-foot"><button type="button" class="btn btn-secondary" id="codeCancel">Cancelar</button></div>
+  </dialog>
+
+  <!-- Devolución -->
+  <dialog id="devDlg" class="dlg" aria-labelledby="devTitle">
+    <form id="devForm" class="dlg-form">
+      <div class="dlg-head"><h2 id="devTitle">Devolución</h2><button type="button" class="dlg-x" data-devclose aria-label="Cerrar">×</button></div>
+      <div class="dlg-body">
+        <p class="hint" id="devInfo"></p>
+        <div class="table-wrap"><table class="tbl tbl-dev"><thead><tr><th>Producto</th><th class="ta-r">Vendidos</th><th class="ta-r">Devuelve</th><th class="ta-r">Monto</th></tr></thead><tbody id="devRows"></tbody></table></div>
+        <label class="fld"><span>Motivo</span><input id="devMotivo" maxlength="160" placeholder="Ej: producto vencido, cambio, falla" autocomplete="off"></label>
+        <div class="dev-total"><span>Vale a favor del cliente</span><strong id="devTotal">Gs. 0</strong></div>
+        <p class="hint">El stock vuelve solo. Se genera una <strong>nota de devolución</strong> con un código (vale a favor) para descontar en una próxima compra. No sale plata de la caja.</p>
+      </div>
+      <div class="dlg-foot"><button type="button" class="btn btn-secondary" data-devclose>Cancelar</button><button type="submit" class="btn btn-accent" id="devOk">Devolver y generar vale</button></div>
+    </form>
+  </dialog>
+
+  <!-- Venta terminada -->
+  <dialog id="doneDlg" class="dlg dlg-sm" aria-labelledby="doneTitle">
+    <div class="confirm-body">
+      <span class="confirm-ico is-ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <h2 id="doneTitle">Venta registrada</h2>
+      <p id="doneNum"></p>
+      <div class="done-change" id="doneChangeBox"><span>Vuelto</span><strong id="doneChange"></strong></div>
+      <p class="done-mail" id="doneSifenState" hidden></p>
+      <p class="done-mail" id="doneMailState" hidden></p>
+    </div>
+    <div class="dlg-foot">
+      <div class="done-actions">
+        <button type="button" class="btn btn-print" id="donePrint">Imprimir</button>
+        <button type="button" class="btn btn-pdf" id="donePdf">Descargar PDF</button>
+        <button type="button" class="btn btn-wa-sm" id="doneWa">WhatsApp</button>
+        <button type="button" class="btn btn-mail" id="doneMail">Correo</button>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" id="doneNew">Nueva venta <kbd>Enter</kbd></button>
+    </div>
+  </dialog>
+
+  <!-- Cámara -->
+  <dialog id="camDlg" class="dlg dlg-sm" aria-labelledby="camTitle">
+    <div class="confirm-body">
+      <h2 id="camTitle">Apuntá al código de barras</h2>
+      <div id="camReader" class="cam-reader"></div>
+      <p class="hint" id="camHint">Si te lo pide, permití el uso de la cámara.</p>
+    </div>
+    <div class="dlg-foot"><button type="button" class="btn btn-secondary" id="camClose">Cerrar</button></div>
+  </dialog>
+
+  <!-- Ventana de confirmación -->
+  <dialog id="confirmDlg" class="dlg dlg-sm" aria-labelledby="cTitle" aria-describedby="cText">
+    <div class="confirm-body">
+      <span class="confirm-ico" id="cIco"></span>
+      <h2 id="cTitle"></h2>
+      <p id="cText"></p>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" class="btn btn-secondary" id="cNo">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="cYes">Aceptar</button>
+    </div>
+  </dialog>
+</div>
+
+<script src="assets/comun.js?v=20261029b"></script>
+<script src="assets/admin.js?v=20261029c"></script>
+<script src="assets/ventas.js?v=20261029c"></script>
+<script src="assets/caja.js?v=20261029c"></script>
+<script src="assets/contactos.js?v=20261029"></script>
+</body>
+</html>

@@ -28,6 +28,14 @@
       "iv": "CEidBjKnRCEYnKag",
       "ct": "J23gSU0ccibN7hVSegC24TmbWlV7UCCg9pJ2G5lMXYvjv0yOWU0Mkuxq3z6f1ZJaMpKyUV9yNp8YqslRZyChZHLAT0V0TjMSaadPkA9YC5yH3/JB3wCNGKyhCgTSZmvggHvjkVNu9i1m0vNiDdcwUwYabza+He0AZjCesPgmH4lYdgy24ZbNKxXBGrZ6ia8QFneX68JslxThVhTcMa9YnR3VwiKzknbwKgTSEjyvNL0Y7w==",
       "iterations": 310000
+    },
+    {
+      "user": "cajero",
+      "role": "cajero",
+      "salt": "dPtKA4g7xt7VpsCvoZd9tg==",
+      "iv": "uKdDhpyVodBB1zIc",
+      "ct": "w/mm6tgSu2rdMKw2AqDgvVUB/mcXoe/3PBYnTsyL/1I2PU/H3iygGfDpKLielony6OIezpMvHHCUVVXCfyD9T0EOVObV55Ty6bZI/94cFuvg2AR7ao1/g6Z4EEtxQay6Y2X5uXD43fDQ3iUQg15xpvZLBMJ2ydxyflwNYaBXtwAsQBMz6IyVCuFhm1BoKs7/jULg0yPTx3UaZ+DhuVZc6unAS53GsTDzyqO+YgMPPK/9gw==",
+      "iterations": 310000
     }
   ]
 }

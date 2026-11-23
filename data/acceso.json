@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "owner": "",
-  "repo": "",
-  "branch": "",
-  "is_default": true,
-  "salt": "otFGBdDMEY/rnpn6VbwciQ==",
-  "iv": "WTxIkNt6pITP56EK",
-  "ct": "/PltKHdjDY+qjhTCJZGGXW13fY/1ObsbG4hq/0c=",
+  "owner": "invitamos",
+  "repo": "minimarket2",
+  "branch": "main",
+  "is_default": false,
+  "salt": "jX2HQf+UORjTfJmxppiLAQ==",
+  "iv": "Fq90F1g+gP+OfMrR",
+  "ct": "o9w++4UP5hIVQRb9Tp4QwOQDBl3TXYT6wcpZF9ZxiULZ0ohDMd9EAcKXBkstqjgkPmeSsOM84Vzl6LF4Kww79PH9xNoySyFRA7igqTs+5t6HWjRpShxip/SGGBiDDXdT74xOlfWD+Ljs8CNZtrvFz/+aktQwmYrYSALfyaHFUWd7fHR06bFoWoc4b1eio9QibICKtI0Ee/zBt+0RghEQ3eUljqPDF1Y5u/y0RnZOiRns6Q==",
   "iterations": 310000
 }

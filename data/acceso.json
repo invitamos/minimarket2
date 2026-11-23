@@ -1,11 +1,17 @@
 {
-  "version": 2,
+  "version": 3,
   "owner": "invitamos",
   "repo": "minimarket2",
   "branch": "main",
   "is_default": false,
-  "salt": "jX2HQf+UORjTfJmxppiLAQ==",
-  "iv": "Fq90F1g+gP+OfMrR",
-  "ct": "o9w++4UP5hIVQRb9Tp4QwOQDBl3TXYT6wcpZF9ZxiULZ0ohDMd9EAcKXBkstqjgkPmeSsOM84Vzl6LF4Kww79PH9xNoySyFRA7igqTs+5t6HWjRpShxip/SGGBiDDXdT74xOlfWD+Ljs8CNZtrvFz/+aktQwmYrYSALfyaHFUWd7fHR06bFoWoc4b1eio9QibICKtI0Ee/zBt+0RghEQ3eUljqPDF1Y5u/y0RnZOiRns6Q==",
-  "iterations": 310000
+  "users": [
+    {
+      "user": "Yessica",
+      "role": "admin",
+      "salt": "zgcuSL6kJxZ0HAzLPIaNWg==",
+      "iv": "7VfE172DOPFa8xb7",
+      "ct": "jWMVqGM8BkJoe1SY4izeY0R2PMH8zaRlwmlCFfG7ifaUFgE3Cz+5oweM8ONnpTTZlDXd9fj2fsdpNWq5wf1D23auaNGJT/Nit15zCj0S8u+z1VO8Ekme4DRSpMtB5egpY9vARS/bJPv+KHcmYukZnPt6BazPlINTok26K39fRGvnqmI7CycTyZQcK1WnTJfWVGxez+l0g/Bu0PECeburKRt7qh78eNO44jmdAwenfyKeUA==",
+      "iterations": 310000
+    }
+  ]
 }
